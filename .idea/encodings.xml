@@ -3,6 +3,8 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web-toeic-core-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web-toeic-core-common/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/web-toeic-core-dao-impl/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/web-toeic-core-dao-impl/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/web-toeic-core-dao/src/main/java" charset="UTF-8" />
@@ -11,6 +13,8 @@
     <file url="file://$PROJECT_DIR$/web-toeic-core-data/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/web-toeic-core-dto/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/web-toeic-core-dto/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web-toeic-core-peristence-data/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web-toeic-core-peristence-data/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/web-toeic-core-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/web-toeic-core-service/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/web-toeic-logic/src/main/java" charset="UTF-8" />

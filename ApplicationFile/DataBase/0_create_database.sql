@@ -1,0 +1,1 @@
+create database web-toeic character set utf8
