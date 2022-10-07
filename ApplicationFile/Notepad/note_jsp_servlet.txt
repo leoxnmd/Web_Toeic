@@ -14,7 +14,11 @@
 	
 ///	------------------------------ hibernate --------------------------------------------//
 
+					//---Session---//
+					
+	//--tạo SessionFactory--//
 			//--xml--//
+			
 //tạo 1 filw hibernate.cfg.xml
 //thêm đoạn lệnh dưới để khởi tạo session-factory
 //session-factory hỗ trợ tạo ra đối tượng session
@@ -60,7 +64,13 @@
 	 public static SessionFactory getSessionFactory() {
         return SESSION_FACTORY;
     }
-			//--mapping--//
+	
+
+	//---tạo SessionFactory---//
+
+
+		//--mapping--//
+		
 // để mapping java vs sql thông qua hibernate ta cần khai báo như sau:
 	//ở mỗi file object- đối tượng thêm vào trước class
   @Entity//class này là một entity(đối tượng, thực thể)
@@ -136,5 +146,7 @@
 //ở bảng baiviet n...1 comment
  @OneToMany(mappedBy = "baiViet", fetch = FetchType.LAZY)
     private List<Comment> listComment;
+	
+
 
 
