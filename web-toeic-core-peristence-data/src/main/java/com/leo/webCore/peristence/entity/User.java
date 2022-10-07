@@ -3,6 +3,7 @@ package com.leo.webCore.peristence.entity;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity//class này là một entity(đối tượng, thực thể)
 @Table(name = "user")//object này tương ứng với bảng user trong sql
@@ -19,7 +20,19 @@ public class User {
     @Column(name = "createddate")
     private Timestamp createdDate;
 
-    public User() {
+    @ManyToOne
+    @JoinColumn(name = "roleid")
+    private Role role;
+
+    @OneToMany(mappedBy = "userid",fetch = FetchType.LAZY)
+    private List<Comment> listComment;
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public int getUserId() {

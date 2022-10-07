@@ -1,10 +1,9 @@
 package com.leo.webCore.peristence.entity;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "role")
@@ -15,6 +14,9 @@ public class Role {
     private String roleId;
     @Column(name = "name")
     private String name;
+
+    @OneToMany(mappedBy = "role",fetch = FetchType.LAZY)
+    private List<User> usersList;
 
     public String getRoleId() {
         return roleId;

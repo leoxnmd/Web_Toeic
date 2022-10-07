@@ -13,3 +13,22 @@ create TABLE `role` (
   PRIMARY KEY (`roleid`)
   );
 
+create TABLE `listenguideline` (
+  `listenguidelineid` INT NOT NULL AUTO_INCREMENT,
+  `image` VARCHAR(50) NULL,
+  `title` VARCHAR(150) NULL,
+  `content` TEXT NULL,
+  `createddate` TIMESTAMP NULL,
+  `modifiedate` TIMESTAMP NULL,
+  PRIMARY KEY (`listenguidelineid`)
+  );
+
+  create TABLE `comment` (
+  `commentid` INT NOT NULL AUTO_INCREMENT,
+  `content` TEXT NULL,
+  `userid` INT NULL,
+  `listenguidelineid` INT NULL,
+  `createddate` TIMESTAMP NULL,
+  PRIMARY KEY (`commentid`)
+  );
+
