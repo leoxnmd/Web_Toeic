@@ -1,0 +1,140 @@
+//Common :dùng để gọi hằng số dùng chung cho web khi project nhiều người làm
+// utils: chứa phương thức dùng đi dùng lại nhiều lần
+
+//add module trong project
+//add module web-toeic-logic vào
+  <dependencies>
+        <dependency>
+            <groupId>com.leo</groupId>
+            <artifactId>web-toeic-logic</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+	
+	
+///	------------------------------ hibernate --------------------------------------------//
+
+			//--xml--//
+//tạo 1 filw hibernate.cfg.xml
+//thêm đoạn lệnh dưới để khởi tạo session-factory
+//session-factory hỗ trợ tạo ra đối tượng session
+//mà session dùng để thực thi câu lệnh.
+
+<?xml version="1.0" encoding="utf-8"?>
+        <!DOCTYPE hibernate-configuration PUBLIC
+                "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+                "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.password">123456</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/web-toeic?autoReconnect=true&amp;characterEncoding=utf-8&amp;useUnicode=true&amp;connectionCollation=utf8_unicode_ci&amp;characterSetResults=utf8</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="show_sql">true</property>
+		// thêm vào thẻ <mapping> mapping với class object
+		<mapping class="com.leo.webCore.peristence.entity.User"/>//tương ứng 1 class object
+    </session-factory>
+</hibernate-configuration>
+
+			//--java code--//
+//tạo 1 file java code (khuyến cáo tạo package common để chứa)
+//nên thêm static
+
+//khởi tạo biến hằng số tĩnh
+ private static final SessionFactory SESSION_FACTORY = buildSessionFactory();
+ 
+ //tạo 1 sesionFactory từ hibernate.cfg.xml
+ private static SessionFactory buildSessionFactory() {
+        
+		//nên sử dụng try catch đề phòng sesionFactory khởi tạo bị lỗi
+        try {
+            return new Configuration().configure().buildSessionFactory();
+        } catch (Throwable e) {
+            System.out.println("initial session Factory fail");
+            throw new ExceptionInInitializerError();
+        }
+		
+    }
+//hàm lấy SessionFactory
+	 public static SessionFactory getSessionFactory() {
+        return SESSION_FACTORY;
+    }
+			//--mapping--//
+// để mapping java vs sql thông qua hibernate ta cần khai báo như sau:
+	//ở mỗi file object- đối tượng thêm vào trước class
+  @Entity//class này là một entity(đối tượng, thực thể)
+  @Table(name = " ")//object class này tương ứng với bảng trong sql
+
+//ở mỗi biến đối tượng cần khai báo:
+//nếu là id tự tăng:
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private int id;
+  
+//nếu id không tự tăng:
+  @Id
+  @Column(name = "id")
+  private int id;
+  
+//nếu column bình thường khai báo giống tên column trong sql
+   @Column(name = "name")
+   private String name;
+ 
+// thêm vào fiel hibernate.cfg.xml để mapping với class object
+<mapping class="com.leo.webCore.peristence.entity.User"/>//tương ứng 1 class object
+
+// nếu sử dụng module thì ở module chứa hibernate.cfg.xml thêm vào pom.xml
+  <dependency>
+            <groupId>com.leo</groupId>
+            <artifactId>web-toeic-core-peristence-data</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+		
+	//--quan hệ giữa các bảng--//
+	
+  //--quan hệ 1...n --//
+// vd: bảng quyền(1) và bảng user(n)
+// 1 gọi list
+// n gọi class
+  
+//ở class obj quan hệ 1 
+
+ @OneToMany(mappedBy = "role",fetch = FetchType.LAZY)//role ở name tương ứng với tên biến gọi class bên class quan hệ n 
+     private List<User> usersList;
+
+ //LAZY: khi query(truy vấn) không lấy list dữ liệu đồng thời(vẫn có thể lấy list khi cần)
+ // EAGER:lấy đồng thời list nên ảnh hưởng hiệu năng
+ 
+ //ở class obj quan hệ n
+
+ @ManyToOne
+    @JoinColumn(name = "roleid")//tên column(cột) khoá chính bảng quan hệ 1
+    private Role role;//gọi class quan hệ 1 và gọi thêm seter getter
+
+  //--quan hệ n...n--//
+//là quan hệ 1...n và n...1 thông qua 1 bảng trung gian
+//vd: bảng user 1..n comment n...1 baiviet
+
+//ở bảng user quan hệ 1 với n comment
+
+  @OneToMany(mappedBy = "userid",fetch = FetchType.LAZY)
+    private List<Comment> listComment;
+	
+//ở bảng comment trung gian với 2 bảng user và baiviet
+
+ //quan hệ comment 1...n baiviet
+    @ManyToOne
+    @JoinColumn(name = "baivietid")
+    private BaiViet baiViet;
+
+    //quan hệ user 1..n comment
+    @ManyToOne
+    @JoinColumn(name = "userid")
+    private User user;
+
+//ở bảng baiviet n...1 comment
+ @OneToMany(mappedBy = "baiViet", fetch = FetchType.LAZY)
+    private List<Comment> listComment;
+
+
