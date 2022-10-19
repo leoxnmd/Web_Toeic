@@ -1,4 +1,4 @@
-create TABLE `user` (
+create TABLE `userEntity` (
   `userid` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(100) NULL,
   `fullname` VARCHAR(45) NULL,
@@ -7,7 +7,7 @@ create TABLE `user` (
   PRIMARY KEY (`userid`)
   );
 
-create TABLE `role` (
+create TABLE `roleEntity` (
   `roleid` INT NOT NULL,
   `name` VARCHAR(45) NULL,
   PRIMARY KEY (`roleid`)

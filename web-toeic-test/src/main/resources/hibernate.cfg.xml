@@ -17,7 +17,7 @@
         <!-- Echo the SQL to stdout -->
         <property name="show_sql">true</property>
 
-        <!-- Set the current session context -->
+
         <!--  maping class object -->
         <mapping class="com.leo.webCore.peristence.entity.UserEntity"/>
         <mapping class="com.leo.webCore.peristence.entity.RoleEntity"/>

@@ -4,29 +4,28 @@
         <artifactId>Web_Toeic</artifactId>
         <groupId>com.leo</groupId>
         <version>1.0-SNAPSHOT</version>
-
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>web-toeic-core-dao</artifactId>
+    <artifactId>web-toeic-test</artifactId>
     <dependencies>
         <dependency>
             <groupId>com.leo</groupId>
             <artifactId>web-toeic-core-peristence-data</artifactId>
             <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.leo</groupId>
-            <artifactId>web-toeic-core-datas</artifactId>
+            <artifactId>web-toeic-core-dao</artifactId>
             <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.leo</groupId>
-            <artifactId>web-toeic-core-datas</artifactId>
+            <artifactId>web-toeic-core-dao-impl</artifactId>
             <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

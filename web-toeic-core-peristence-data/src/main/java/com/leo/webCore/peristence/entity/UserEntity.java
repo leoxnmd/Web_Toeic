@@ -1,13 +1,12 @@
 package com.leo.webCore.peristence.entity;
 
-import jakarta.persistence.*;
-
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
 
 @Entity//class này là một entity(đối tượng, thực thể)
 @Table(name = "user")//object này tương ứng với bảng user trong sql
-public class User {
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
@@ -22,17 +21,17 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "roleid")
-    private Role role;
+    private RoleEntity roleEntity;
 
-    @OneToMany(mappedBy = "userid",fetch = FetchType.LAZY)
-    private List<Comment> listComment;
+    @OneToMany(mappedBy = "userEntity",fetch = FetchType.LAZY)
+    private List<CommentEntity> listComment;
 
-    public Role getRole() {
-        return role;
+    public RoleEntity getRole() {
+        return roleEntity;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRole(RoleEntity roleEntity) {
+        this.roleEntity = roleEntity;
     }
 
     public int getUserId() {

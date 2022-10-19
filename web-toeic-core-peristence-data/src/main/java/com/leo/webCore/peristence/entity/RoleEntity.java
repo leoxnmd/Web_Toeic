@@ -1,13 +1,13 @@
 package com.leo.webCore.peristence.entity;
 
 
-import jakarta.persistence.*;
-
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "role")
-public class Role {
+public class RoleEntity implements Serializable {
 
     @Id
     @Column(name = "roleid")
@@ -15,8 +15,8 @@ public class Role {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "role",fetch = FetchType.LAZY)
-    private List<User> usersList;
+    @OneToMany(mappedBy = "roleEntity",fetch = FetchType.LAZY)
+    private List<UserEntity> usersList;
 
     public String getRoleId() {
         return roleId;
