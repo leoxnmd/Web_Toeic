@@ -11,18 +11,18 @@ public class RoleEntity implements Serializable {
 
     @Id
     @Column(name = "roleid")
-    private String roleId;
+    private int roleId;
     @Column(name = "name")
     private String name;
 
     @OneToMany(mappedBy = "roleEntity",fetch = FetchType.LAZY)
     private List<UserEntity> usersList;
 
-    public String getRoleId() {
+    public int getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(String roleId) {
+    public void setRoleId(int roleId) {
         this.roleId = roleId;
     }
 

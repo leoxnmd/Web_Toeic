@@ -26,16 +26,20 @@
 
 <?xml version="1.0" encoding="utf-8"?>
         <!DOCTYPE hibernate-configuration PUBLIC
-                "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-                "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.connection.password">123456</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/web-toeic?autoReconnect=true&amp;characterEncoding=utf-8&amp;useUnicode=true&amp;connectionCollation=utf8_unicode_ci&amp;characterSetResults=utf8</property>
-        <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+             <!-- JDBC Database connection settings -->
+        <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/web-toeic</property>
+        <property name="connection.username">root</property>
+        <property name="connection.password">123456</property>
+        <!-- Select our SQL dialect -->
+        <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
+        <!-- Echo the SQL to stdout -->
         <property name="show_sql">true</property>
+		
 		// thêm vào thẻ <mapping> mapping với class object
 		<mapping class="com.leo.webCore.peristence.entity.UserEntity"/>//tương ứng 1 class object
     </session-factory>
@@ -52,12 +56,26 @@
  private static SessionFactory buildSessionFactory() {
         
 		//nên sử dụng try catch đề phòng sesionFactory khởi tạo bị lỗi
-        try {
-            return new Configuration().configure().buildSessionFactory();
-        } catch (Throwable e) {
-            System.out.println("initial session Factory fail");
-            throw new ExceptionInInitializerError();
-        }
+      public static SessionFactory getSessionFactory() {
+		if (sessionFactory == null) {
+			try {
+				// Create registry
+				registry = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
+				// Create MetadataSources
+				MetadataSources sources = new MetadataSources(registry);
+				// Create Metadata
+				Metadata metadata = sources.getMetadataBuilder().build();
+				// Create SessionFactory
+				sessionFactory = metadata.getSessionFactoryBuilder().build();
+			} catch (Exception e) {
+				e.printStackTrace();
+				if (registry != null) {
+					StandardServiceRegistryBuilder.destroy(registry);
+				}
+			}
+		}
+		return sessionFactory;
+	}
 		
     }
 //hàm lấy SessionFactory
@@ -66,8 +84,11 @@
     }
 	
 
-	//---tạo SessionFactory---//
-
+	//---lấy Session---//
+  // phải khởi tạo lại session ở mỗi hàm truy vấn nếu không sẽ bị lỗi
+  //nếu không nó sẽ không khởi tạo lại session nữa (không trả về đúng session cần thực thi)
+  
+        Session session= HibernateUtil.getSessionFactory().openSession();
 
 		//--mapping--//
 		
@@ -149,4 +170,135 @@
 	
 
 
+//=====================Thêm Sửa Xoá Xem Tìm SQL hibernate==================//
+
+
+	//---Xem = findAll = show---//
+
+  public List<T> findAll() {//T là tên entity(object)
+        List<T> list = new ArrayList<>();
+		
+		  // phải khởi tạo lại session ở mỗi hàm truy vấn nếu không sẽ bị lỗi
+        Session session=HibernateUtil.getSessionFactory().openSession();//mở session
+        Transaction transaction = session.beginTransaction();//mở đối tượng transaction
+
+        try {
+            //HQL:
+            StringBuilder sql = new StringBuilder("from ");//dùng StringBuffer để nối chuỗi sẽ tốt hơn nối chuỗi +
+            sql.append(this.getPersistenceClassName());//nên trỏ this : đứng tại class, chứa class
+            list = this.getSession().createQuery(sql.toString(),persistenceClass).getResultList();
+            //chuyển tên class không phai tên bảng sql
+            transaction.commit();
+        } catch (HibernateError e) {
+            transaction.rollback();//rollback dùng để thực thi lại
+            throw e;
+       }finally {
+            session.close();//nên đóng 
+        }
+        return list;
+    }
+
+	//---Sửa = Update---//
+
+ public T update(T entity) {
+        T result=null;
+        Session session=HibernateUtil.getSessionFactory().openSession();//mở session
+        Transaction transaction = session.beginTransaction();//mở đối tượng transaction
+        try{
+          Object object=session.merge(entity);//merge là update trong hibernate //chuyển đối tượng entity
+            result = (T) object;
+            transaction.commit();
+        }catch (HibernateException e){
+            transaction.rollback();
+            throw e;
+         }finally {
+        session.close();
+    }
+        return result;
+    }
+	//---Thêm = add = save---//
+	
+	public void save(T entity) {
+        Session session=HibernateUtil.getSessionFactory().openSession();//mở session
+        Transaction transaction = session.beginTransaction();//mở đối tượng transaction
+        try{
+            session.persist(entity);//persist là thêm 
+            transaction.commit();
+        }catch (HibernateException e){
+            transaction.rollback();
+            throw e;
+        }finally {
+        session.close();
+    }
+	}
+	//---tìm theo id = findById ---//
+	
+	 public T findById(ID id) {
+        T reuslt=null;
+        Session session=HibernateUtil.getSessionFactory().openSession();//mở session
+        Transaction transaction = session.beginTransaction();//mở đối tượng transaction
+        try {
+            reuslt = session.get(persistenceClass,id);//get truyền vào class và Serializable (để sử dụng phải extends vd: ID extends Serializable )
+            if(reuslt==null){
+                throw new ObjectNotFoundException("Not Found "+id, null);// ném lỗi khi không tìm thấy id
+            }
+        }catch (HibernateException e){
+            transaction.rollback();
+            throw e;
+        }finally {
+            session.close();
+        }
+        return reuslt;
+    }
+	
+		//---tìm theo điều kiện và sắp xếp theo điều kiện (dùng trong bảng ) = findByProperty ---//
+		
+	// perporty : tên cột 
+	// value: điều kiện tìm
+	// sortExpession: tên cột cần sắp xếp tăng giảm
+	//sortExpession : asc (h) desc sắp xếp tăng giảm
+	
+	 public Object[] findByProperty(String property, Object value, String sortExpession, String sortDerection) {
+        List<T> list = new ArrayList<>();
+        Object totalItem=0;
+        Session session = HibernateUtil.getSessionFactory().openSession();//mở session
+        Transaction transaction = session.beginTransaction();//mở đối tượng transaction
+        try {
+            StringBuilder sqlList = new StringBuilder("from ");
+            sqlList.append(this.getPersistenceClassName());
+            if (property != null && value != null) {
+                sqlList.append(" where ").append(property).append("=:value ");
+            }
+            if (sortExpession != null && sortDerection != null) {
+                sqlList.append(" order by ").append(sortExpession);
+                sqlList.append(" ").append(sortDerection.equals(CoreConstant.SORT_ASC) ? "asc" : "desc");
+            }
+            Query queryList =session.createQuery(sqlList.toString());
+            if (value != null) {
+                queryList.setParameter("value",value);
+            }
+            list=queryList.getResultList();
+
+            StringBuilder sqlSize=new StringBuilder("select count(*) from ");
+            sqlSize.append(this.getPersistenceClassName());
+            if (property != null && value != null) {
+                sqlSize.append(" where ").append(property).append("=:value");
+            }
+            Query query= session.createQuery(sqlSize.toString());
+            if (value != null) {
+                queryList.setParameter("value",value);
+            }
+           totalItem= query.list().get(0);//trả về object
+            transaction.commit();
+        } catch (HibernateException e) {
+            transaction.rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
+        return new Object[]{totalItem,list};
+    }
+
+
+	//---xoá list id = delete  ---//
 

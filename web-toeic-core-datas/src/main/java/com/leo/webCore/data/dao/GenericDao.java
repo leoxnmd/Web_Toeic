@@ -9,5 +9,9 @@ public interface GenericDao<ID extends Serializable, T> {
     //interface  viết phương thức nhưng không có thân hàm '{}'
     //interface hiển thị thuộc tính riêng
     List<T> findAll();
-
+    T update(T entity);
+    void  save(T entity);
+    T findById(ID id);
+    Object[] findByProperty(String property, Object value, String sortExpession, String sortDerection);
+    int delete(List<ID> id);
 }

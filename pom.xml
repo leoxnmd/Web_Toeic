@@ -18,6 +18,8 @@
         <module>web-toeic-core-common</module>
         <module>web-toeic-core-datas</module>
         <module>web-toeic-test</module>
+        <module>web-toeic-core-service-impl</module>
+        <module>web-toeic-core-web</module>
 
 
     </modules>
@@ -31,12 +33,15 @@
 
         <servlet.api.version>3.1.0</servlet.api.version>
         <jsp.api.version>2.3.1</jsp.api.version>
+        <servlet.jstl.version>1.2</servlet.jstl.version>
 
         <mysql.version>8.0.13</mysql.version>
         <hibernate.version>5.3.7.Final</hibernate.version>
         <testng.version>6.9.10</testng.version>
         <jaxb-api.version>2.3.1</jaxb-api.version>
         <jaxb-core.version>4.0.1</jaxb-core.version>
+        <sitemesh.version>2.4.2</sitemesh.version>
+
     </properties>
 
     <dependencies>
@@ -49,6 +54,12 @@
             <groupId>javax.servlet.jsp</groupId>
             <artifactId>javax.servlet.jsp-api</artifactId>
             <version>${jsp.api.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/javax.servlet/jstl -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>${servlet.jstl.version}</version>
         </dependency>
         <!--my sql -->
         <dependency>
@@ -99,6 +110,22 @@
             <version>1.1.1</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/opensymphony/sitemesh -->
+        <dependency>
+            <groupId>opensymphony</groupId>
+            <artifactId>sitemesh</artifactId>
+            <version>${sitemesh.version}</version>
+        </dependency>
+
+
+
+        <!-- https://mvnrepository.com/artifact/junit/junit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 
