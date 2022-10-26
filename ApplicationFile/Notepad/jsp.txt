@@ -1,0 +1,3 @@
+// JSTL :là một thư viện được cung cấp bởi jsp
+
+<c:url /> //khai báo vị trí của folder trong project
