@@ -1,0 +1,42 @@
+
+DTO(Data transfer object): (java bean)
+  - là các class đóng gói data để chuyển giữa client - server hoặc giữa các service
+  - Mục đích tạo ra DTO là để giảm bớt lượng info không cần thiết phải chuyển đi, và cũng tăng cường độ bảo mật.
+ cấu trúc:
+	- private property
+	- getter,setter
+	- implements
+	- extend
+	
+POJO (Plain Old Java Object - Các đối tượng Java thuần túy) //là một java bean thuần không được extend hay implements nhưng được implements Serializable
+	- là một đối tượng bình thường không bị ràng buộc với các hạn chế đặc biệt.
+	- Đơn giản, POJO hoạt động như một cấu trúc dữ liệu thuần túy có các phương thức getter và setter.
+ cấu trúc:
+	- private property
+	- getter,setter
+	
+ENTITY 
+	- là một Java class tương ứng với một table trong database, mỗi entity object tương ứng với một dòng trong bảng
+	- JPA yêu cầu một entity class phải cung cấp đầy đủ các metadata để ánh xạ giữa entity class và table như tên cột, kiểu dữ liệu, khoá chính, khoá ngoại, etc
+	- sử dụng annotation (h) xml descriptors để cấu hình một entity class.
+	- annotation (các @ - vd: @id) : Chú thích
+	
+ANNOTATION
+	- là một dạng chú thích hoặc  một dạng siêu dữ liệu (metadata) được dùng để cung cấp thông tin dữ liệu cho mã nguồn Java
+
+METADATA (Siêu dữ liệu)
+	- dạng dữ liệu mô tả chi tiết thông tin về dữ liệu (data about data - dữ liệu về dữ liệu).
+	- nó là mô tả và bối cảnh của dữ liệu, giúp chúng ta có thể tổ chức, tìm và hiểu dữ liệu.
+ Các metadata điển hình
+	- Tiêu đề và mô tả
+	- Thẻ và danh mục
+	- Ai đã tạo và khi nào
+	- Ai sửa đổi lần cuối và khi nào
+	- Ai có thể truy cập, ai có thể cập nhật
+	
+Abstract :
+	- 
+ tác dung (cá nhân thấy):
+	- tái sử dụng thuộc tính nhiều lần.
+	- hỗ trợ tái sử dụng cho interface.
+	

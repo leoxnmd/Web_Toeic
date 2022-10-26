@@ -1,37 +1,22 @@
-package com.leo.webCore.peristence.entity;
+package com.leo.webCore.dto;
 
-import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.List;
 
-@Entity//class này là một entity(đối tượng, thực thể)
-@Table(name = "user")//object này tương ứng với bảng user trong sql
-public class UserEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UserDTO implements Serializable {
     private int userId;
-    @Column(name = "name")
     private String name;
-    @Column(name = "password")
     private String password;
-    @Column(name = "fullname")
     private String fullName;
-    @Column(name = "createddate")
     private Timestamp createdDate;
+    private RoleDTO roleDTO;
 
-    @ManyToOne
-    @JoinColumn(name = "roleid")
-    private RoleEntity roleEntity;
-
-    @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY)
-    private List<CommentEntity> listComment;
-
-    public RoleEntity getRole() {
-        return roleEntity;
+    public RoleDTO getRoleDTO() {
+        return roleDTO;
     }
 
-    public void setRole(RoleEntity roleEntity) {
-        this.roleEntity = roleEntity;
+    public void setRoleDTO(RoleDTO roleDTO) {
+        this.roleDTO = roleDTO;
     }
 
     public int getUserId() {
